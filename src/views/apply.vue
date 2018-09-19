@@ -66,8 +66,14 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        console.log(this.formValidate);
+                        this.$http.get('/order/list').then(response=>{
+                            console.log(response.data);
+                        }).catch(error=>{
+                            console.log(error);
+                        });
+
                         this.$Message.success('Success!');
+                        this.$emit("routerpush", {name : "applyInfo"});
                     }
                 })
             },

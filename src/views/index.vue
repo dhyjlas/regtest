@@ -40,12 +40,18 @@
         right: 0;
         z-index: 1;
     }
+    .title{
+        color: #dcdee2;
+        font-family : 微软雅黑;
+        font-weight: normal;
+    }
 </style>
 <template>
     <div class="layout">
         <Header>
             <Menu mode="horizontal" theme="dark" active-name="1">
                 <div class="layout-logo"></div>
+                <h1 class="title">设备激活号申请系统</h1>
                 </Menu>
             </Header>
         <Layout :style="{minHeight: '100vh'}">
