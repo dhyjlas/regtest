@@ -12,6 +12,8 @@ let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
+  baseURL : "http://localhost:9051",
+  timeout: 10 * 1000,
 };
 
 const _axios = axios.create(config);

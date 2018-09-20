@@ -48,12 +48,12 @@
 </style>
 <template>
     <div class="layout">
-        <Header>
+        <!-- <Header>
             <Menu mode="horizontal" theme="dark" active-name="1">
                 <div class="layout-logo"></div>
                 <h1 class="title">设备激活号申请系统</h1>
-                </Menu>
-            </Header>
+            </Menu>
+        </Header> -->
         <Layout :style="{minHeight: '100vh'}">
             <Sider :collapsed-width="78" :style="{background: '#fff'}">
                 <Menu active-name="1" theme="light" width="auto" :class="menuitemClasses" @on-select="m=>{select(m)}">
@@ -89,33 +89,37 @@
                 menuList: [
                     {
                         id: '1',
-                        icon: 'ios-cog',
                         name: '密钥管理',
                         children: [
                             {
                                 id: '2',
-                                icon: 'ios-cog',
+                                icon: 'md-add-circle',
                                 name: '密钥申请',
                                 url: '/apply'
                             },
                             {
                                 id: '3',
-                                icon: 'ios-cog',
+                                icon: 'ios-paper',
                                 name: '密钥列表',
-                                url: '/apply'
+                                url: '/regList'
+                            },
+                            {
+                                id: '6',
+                                icon: 'ios-paper',
+                                name: '测试页面',
+                                url: '/test'
                             }
                         ]
                     },
                     {
                         id: '4',
-                        icon: 'ios-cog',
                         name: '设备管理',
                         children: [
                             {
                                 id: '5',
-                                icon: 'ios-cog',
+                                icon: 'md-unlock',
                                 name: '设备列表',
-                                url: '/apply'
+                                url: '/activeList'
                             }
                         ]
                     }
@@ -155,7 +159,6 @@
 
             //回调方法页面跳转
             routerpush(e) {
-                console.log(e);
                 this.$router.push(e);
             }
         }
