@@ -13,6 +13,14 @@ export default new Router({
       component: () => import('./views/index.vue'),
       children: [
         {
+            path: '/login',
+            name: "login",
+            meta: {
+                title: '登录'
+            },
+            component: () => import('./views/login.vue')
+        },
+        {
             path: '/apply',
             name: "apply",
             meta: {
@@ -51,16 +59,12 @@ export default new Router({
               title: '设备列表'
           },
           component: () => import('./views/activeList.vue')
-        },
-        {
-          path: '/test',
-          name: "test",
-          meta: {
-              title: '测试页面'
-          },
-          component: () => import('./views/test.vue')
         }
-    ]
+      ]
+    },{
+      path: "*",
+      name: "index",
+      component: () => import('./views/index.vue')
     }
   ]
 });

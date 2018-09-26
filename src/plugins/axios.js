@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import router from '../router'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -12,14 +13,18 @@ let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
-  baseURL : "http://localhost:9051",
+  baseURL : process.env.NODE_ENV == "development" ? "http://localhost:9051" : "/",
   timeout: 10 * 1000,
+  headers: {
+    'User_token': window.localStorage.getItem('currentUser_token')
+  }
 };
 
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function(config) {
+    config.headers.User_token = window.localStorage.getItem('currentUser_token');
     // Do something before request is sent
     return config;
   },
@@ -32,6 +37,12 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
+    if(response.data)
+      if(response.data.code =="403"){
+        router.replace({
+          path: '/login'
+        });
+      }
     // Do something with response data
     return response;
   },

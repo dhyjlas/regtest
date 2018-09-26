@@ -15,7 +15,7 @@
                 <Input v-model="formValidate.regTotal" type="number" placeholder="请输入激活数量"></Input>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
+                <Button type="primary" @click="handleSubmit('formValidate')" :loading="loading3">提交</Button>
                 <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
         </Form>
@@ -37,7 +37,7 @@
             };
 
             return {
-                loading: false,
+                loading3: false,
                 formValidate: {
                     customerNo: '',
                     companyName: '',
@@ -66,9 +66,11 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
+                        this.loading3 = true;
+                        console.log(this.loading3);
                         this.axios({
                             method: 'post',
-                            url: '/order/add',
+                            url: '/server/order',
                             data: this.formValidate
                         }).then(response => {
                             if(response.data.status == true){
@@ -79,7 +81,9 @@
                             }else{
                                 this.$Message.error(response.data.msg);
                             }
+                            this.loading3 = false;
                         }).catch(error => {
+                            this.loading3 = false;
                             console.log(error);
                             this.$Message.error(error);
                         })

@@ -3,7 +3,7 @@
         <p slot="title">信息修改</p>
         <Form ref="formValidate" :model="$store.state.modifyInfo" :rules="ruleValidate" :label-width="80">
             <FormItem label="客户号" prop="customerNo">
-                <Input v-model="$store.state.modifyInfo.customerNo" placeholder="请输入客户号" disabled></Input>
+                <Input v-model="$store.state.modifyInfo.customerNo" disabled></Input>
             </FormItem>
             <FormItem label="客户名" prop="companyName">
                 <Input v-model="$store.state.modifyInfo.companyName" placeholder="请输入客户名"></Input>
@@ -14,11 +14,11 @@
             <FormItem label="激活数量" prop="regTotal">
                 <Input v-model="$store.state.modifyInfo.regTotal" type="number" placeholder="请输入激活数量"></Input>
             </FormItem>
-            <FormItem label="激活码" prop="pollCode">
-                <Input v-model="$store.state.modifyInfo.pollCode" placeholder="请输入激活数量" disabled></Input>
+            <FormItem label="密钥" prop="pollCode">
+                <Input v-model="$store.state.modifyInfo.pollCode" disabled></Input>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
+                <Button type="primary" @click="handleSubmit('formValidate')" :loading="loading">提交</Button>
             </FormItem>
         </Form>
     </Card>
@@ -65,22 +65,24 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
+                        this.loading = true;
                         this.formValidate.id = this.$store.state.modifyInfo.id;
                         this.formValidate.companyName = this.$store.state.modifyInfo.companyName;
                         this.formValidate.orderNumber = this.$store.state.modifyInfo.orderNumber;
                         this.formValidate.regTotal = this.$store.state.modifyInfo.regTotal;
 
                         this.axios({
-                            method: 'post',
-                            url: '/order/update',
+                            method: 'put',
+                            url: '/server/order',
                             data: this.formValidate
                         }).then(response => {
+                            this.loading = true;
                             this.$Message.success(response.data.msg);
+                            this.$emit("routerpush", {name : "regList"});
                         }).catch(error => {
+                            this.loading = true;
                             console.log(error);
                         })
-
-                        this.$emit("routerpush", {name : "regList"});
                     }
                 })
             }

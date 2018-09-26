@@ -45,16 +45,53 @@
         font-family : 微软雅黑;
         font-weight: normal;
     }
+    .layout-logo{
+        /* width: 300px; */
+        height: 40px;
+        /* background: #ffffff; */
+        /* border-radius: 3px; */
+        float: left;
+        /* position: relative; */
+        /* top: 15px; */
+        /* left: 20px; */
+    }
+    .layout-logo h2{
+        color: #dcdee2;
+        font-size:30px;
+    }
+    .layout-logo img{
+        width: 20%;
+        height: 100%;
+    }
+    .layout-nav{
+        height: 40px;
+        width: 50px;
+        margin: 0 auto;
+        margin-right: 20px;
+    }
 </style>
 <template>
-    <div class="layout">
-        <!-- <Header>
+    <Layout class="layout" :style="{minHeight: '100vh'}">
+        <Header>
             <Menu mode="horizontal" theme="dark" active-name="1">
-                <div class="layout-logo"></div>
-                <h1 class="title">设备激活号申请系统</h1>
+                <div class="layout-logo">
+                    <!-- <img src="../assets/logo.png"></img> -->
+                    <h2>授 权 中 心</h2>
+                </div>
+                
+                <div class="layout-nav">
+                    <Dropdown @on-click="logout()">
+                        <a href="javascript:void(0)">
+                            <Icon type="md-person" size="25" color="#dcdee2"/>
+                        </a>
+                        <DropdownMenu class="dropdown-menu" slot="list">
+                            <DropdownItem>退出</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
             </Menu>
-        </Header> -->
-        <Layout :style="{minHeight: '100vh'}">
+        </Header>
+        <Layout :style="{minHeight: '100%'}">
             <Sider :collapsed-width="78" :style="{background: '#fff'}">
                 <Menu active-name="1" theme="light" width="auto" :class="menuitemClasses" @on-select="m=>{select(m)}">
                     <template v-for="pmenu in menuList">
@@ -78,7 +115,7 @@
                 </Content>
             </Layout>
         </Layout>
-    </div>
+    </Layout>
 </template>
 <script>
     export default {
@@ -102,12 +139,6 @@
                                 icon: 'ios-paper',
                                 name: '密钥列表',
                                 url: '/regList'
-                            },
-                            {
-                                id: '6',
-                                icon: 'ios-paper',
-                                name: '测试页面',
-                                url: '/test'
                             }
                         ]
                     },
@@ -135,6 +166,18 @@
             }
         },
         mounted(){
+            this.axios({
+                method: 'get',
+                url: '/check'
+            }).then(response => {
+                if(response.data.status == false){
+                    this.$router.push("/login");
+                }
+            }).catch(error => {
+                this.$router.push("/login");
+            })
+            
+
             //加载菜单
             for(var i in this.menuList){
                 if(this.menuList[i].children == null){
@@ -149,6 +192,7 @@
                     }
                 }
             }
+            
         },
         methods: {
             //点击菜单页面跳转
@@ -160,6 +204,11 @@
             //回调方法页面跳转
             routerpush(e) {
                 this.$router.push(e);
+            },
+            logout(e){
+                console.log("logout");
+                window.localStorage.setItem('currentUser_token', null)
+                this.$router.push("/login");
             }
         }
     }
