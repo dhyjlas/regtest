@@ -18,7 +18,7 @@
                 <Input v-model="$store.state.modifyInfo.pollCode" disabled></Input>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('formValidate')" :loading="loading">提交</Button>
+                <Button type="primary" @click="handleSubmit('formValidate')" :loading="loading3">提交</Button>
             </FormItem>
         </Form>
     </Card>
@@ -27,12 +27,12 @@
     export default {
         data () {
             const validateAge = (rule, value, callback) => {
-                if (!value) {
-                    return callback(new Error('激活数量不能为空'));
-                }
-                
                 if (value < 0) {
                     return callback(new Error('激活数量至少大于等于0'));
+                }
+
+                if (value+"" == "") {
+                    return callback(new Error('激活数量不能为空'));
                 }
 
                 callback();
@@ -45,7 +45,7 @@
                     orderNumber: '',
                     regTotal: '',
                 },
-                loading: false,
+                loading3: false,
                 ruleValidate: {
                     companyName: [
                         { required: true, message: '客户名不能为空', trigger: 'blur' }
@@ -65,7 +65,7 @@
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.loading = true;
+                        this.loading3 = true;
                         this.formValidate.id = this.$store.state.modifyInfo.id;
                         this.formValidate.companyName = this.$store.state.modifyInfo.companyName;
                         this.formValidate.orderNumber = this.$store.state.modifyInfo.orderNumber;
@@ -76,11 +76,16 @@
                             url: '/server/order',
                             data: this.formValidate
                         }).then(response => {
-                            this.loading = true;
-                            this.$Message.success(response.data.msg);
-                            this.$emit("routerpush", {name : "regList"});
+                            if(response.data.status == true){
+                                this.loading3 = false;
+                                this.$Message.success(response.data.msg);
+                                this.$emit("routerpush", {name : "regList"});
+                            }else{
+                                this.loading3 = false;
+                                this.$Message.error(response.data.msg);
+                            }
                         }).catch(error => {
-                            this.loading = true;
+                            this.loading3 = false;
                             console.log(error);
                         })
                     }
