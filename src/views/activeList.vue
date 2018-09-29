@@ -40,9 +40,10 @@
                 sizeOpts: [10, 20, 30, 50],
                 columns: [
                     {
-                        title: 'ID',
-                        key: 'id',
-                        width: 70
+                        title: '序号',
+                        key: 'serial',
+                        width: 60,
+                        align: 'center'
                     },
                     {
                         title: '客户号',

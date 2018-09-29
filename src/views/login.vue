@@ -71,7 +71,7 @@
                     if(response.data.status == true){
                         window.localStorage.setItem('currentUser_token', response.data.data)
                         this.newModal = false;
-                        this.$emit("routerpush", {name : "index"});
+                        this.$emit("routerpush", {name : "apply"});
                     }else{
                         this.newModal = true;
                         this.failure ++;

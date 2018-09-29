@@ -92,8 +92,8 @@
             </Menu>
         </Header>
         <Layout :style="{minHeight: '100%'}">
-            <Sider :collapsed-width="78" :style="{background: '#fff'}">
-                <Menu active-name="1" theme="light" width="auto" :class="menuitemClasses" @on-select="m=>{select(m)}">
+            <Sider hide-trigger collapsible v-model="isCollapsed" :collapsed-width="78" :style="{background: '#fff'}">
+                <Menu active-name="1" theme="light" width="auto" :class="menuitemClasses" @on-select="m=>{select(m)}" v-if="!isCollapsed">
                     <template v-for="pmenu in menuList">
                         <MenuGroup :title="pmenu.name" v-if="pmenu.children">
                             <MenuItem v-for="cmenu in pmenu.children" :name="cmenu.id" :key="cmenu.id">
@@ -101,6 +101,20 @@
                                 {{cmenu.name}}
                             </MenuItem>
                         </MenuGroup>
+                        <MenuItem :name="pmenu.id" :key="pmenu.id" v-if="!pmenu.children">
+                            <Icon :type="pmenu.icon"></Icon>
+                            {{pmenu.name}}
+                        </MenuItem>
+                    </template>
+                </Menu>
+                <Menu active-name="1" theme="light" width="auto" :class="menuitemClasses" @on-select="m=>{select(m)}" v-if="isCollapsed">
+                    <template v-for="pmenu in menuList">
+                        <template v-for="cmenu in pmenu.children" v-if="pmenu.children">
+                            <MenuItem :name="cmenu.id" :key="cmenu.id">
+                                <Icon :type="cmenu.icon"></Icon>
+                                {{cmenu.name}}
+                            </MenuItem>
+                        </template>
                         <MenuItem :name="pmenu.id" :key="pmenu.id" v-if="!pmenu.children">
                             <Icon :type="pmenu.icon"></Icon>
                             {{pmenu.name}}
