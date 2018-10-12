@@ -214,7 +214,6 @@
                 var filterMenus = this.menuSub.filter(function(menu){return (menu.id==e)});
                 this.$router.push(filterMenus[0].url);
             },
-
             //回调方法页面跳转
             routerpush(e) {
                 this.$router.push(e);

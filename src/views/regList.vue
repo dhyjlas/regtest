@@ -80,7 +80,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 150,
+                        width: 210,
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
@@ -103,12 +103,26 @@
                                         type: 'error',
                                         size: 'small'
                                     },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
                                     on: {
                                         click: () => {
                                             this.remove(params.row.id)
                                         }
                                     }
-                                }, '删除')
+                                }, '删除'),
+                                h('Button', {
+                                    props: {
+                                        type: 'info',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.downloadKey(params.row.id)
+                                        }
+                                    }
+                                }, '下载密钥')
                             ]);
                         }
                     },
@@ -268,6 +282,21 @@
                 document.body.removeChild(link);
                 window.URL.revokeObjectURL(url);
                 this.loading2 = false;
+            },
+            //下载按钮
+            downloadKey(e) {
+                this.axios({
+                    method: 'get',
+                    url: '/server/order/key',
+                    responseType: 'blob',
+                    params: {
+                                id: e
+                            }
+                }).then(response => {
+                    this.output(response.data, response.headers.filename)
+                }).catch((error) => {
+                    this.$Message.error("下载失败，请刷新后重试");
+                })
             }
         }
     }
