@@ -30,7 +30,9 @@
             }
         },
         mounted() {
-
+            if(!this.$store.state.regInfo.customerNo){
+                this.$emit("routerpush", {name : "apply"});
+            }
         },
         methods: {
             
