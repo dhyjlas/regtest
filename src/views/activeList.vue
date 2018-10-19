@@ -29,6 +29,7 @@
         data () {
             return {
                 loading: false,
+                loading2: false,
                 total: 0,
                 size: 10,
                 page: 0,
